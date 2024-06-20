@@ -5,7 +5,7 @@ const AdminDashboard = () => {
   return (
     <Layout>
       <div className='container-fluid'>
-      <h1>AdminDashboard</h1>
+       <h1>AdminDashboard</h1>
       </div>
     </Layout>
   )
