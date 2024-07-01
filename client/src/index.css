@@ -122,3 +122,10 @@
   background: #000000; /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #434343, #000000);
 }
+
+
+
+.product-link{
+  text-decoration: none;
+  color: black !important;
+}
