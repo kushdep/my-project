@@ -59,7 +59,7 @@ const UpdateProduct = () => {
     getAllCategory();
   }, []);
 
-  //create product function
+  //update product function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -94,7 +94,7 @@ const UpdateProduct = () => {
       const { data } = await axios.delete(
         `/api/v1/product/delete-product/${id}`
       );
-      toast.success("Product DEleted Succfully");
+      toast.success("Product Deleted Succfully");
       navigate("/dashboard/admin/products");
     } catch (error) {
       console.log(error);
