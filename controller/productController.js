@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import productModel from "../models/productModel.js";
 import fs from "fs";
+import { MdProductionQuantityLimits } from "react-icons/md";
 
 export const createProductController = async (req, res) => {
   try {
@@ -222,11 +223,11 @@ export const productListControlller = async (req, res) => {
     const perPage = 4;
     const page = req.params.page ? req.params.page : 1;
     const products = await productModel
-    .find({})
-    .select("-photo")
-    .skip((page - 1) * perPage)
-    .limit(perPage)
-    .sort({ createdAt: -1 });
+      .find({})
+      .select("-photo")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       products,
@@ -237,6 +238,28 @@ export const productListControlller = async (req, res) => {
       success: false,
       message: "Error in per page control",
       error,
+    });
+  }
+};
+
+//search controller
+export const searchProductController = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+    const results = await productModel
+      .find({
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+        ],
+      })
+      .select("-photo");
+    res.json(results);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in search product api",
     });
   }
 };
