@@ -1,14 +1,18 @@
 import express from "express";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import {
+  brainTreePaymentController,
+  braintreeTokenController,
   createProductController,
   deleteProductController,
   getProductController,
   getSingleProductController,
+  productCategoryController,
   productCountControlller,
   productFiltersController,
   productListControlller,
   productPhotoController,
+  relatedProductController,
   searchProductController,
   updateProductController,
 } from "../controller/productController.js";
@@ -57,6 +61,19 @@ router.get('/product-count',productCountControlller)
 router.get('/product-list/:page',productListControlller)
 
 //search product
-router.get('/search/:keyword',searchProductController)
+router.get('/search/:keyword ',searchProductController)
+
+//similar product
+router.get('/related-product/:pid/:cid ',relatedProductController)
+
+//category wise product
+router.get("/product-category/:slug", productCategoryController);
+
+//payments routes
+//token
+router.get("/braintree/token", braintreeTokenController);
+
+//payments
+router.post("/braintree/payment", requireSignIn, brainTreePaymentController);
 
 export default router;
