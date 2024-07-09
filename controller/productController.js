@@ -281,7 +281,7 @@ export const searchProductController = async (req, res) => {
 
 //similar product
 export const relatedProductController = async (req, res) => {
-  console.log(req.params)
+  console.log("chota hai")
   try {
     const { pid, cid } = req.params;
     const products = await productModel

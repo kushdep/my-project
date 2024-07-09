@@ -11,9 +11,7 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   //initalp details
-  useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
+ 
   //getProduct
   const getProduct = async () => {
     try {
@@ -26,12 +24,20 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (params?.slug) getProduct();
+  }, [params?.slug]);
+  
+
   //get similar product
   const getSimilarProduct = async (pid, cid) => {
     try {
+      console.log("Thats what she said")
       const { data } = await axios.get(
         `/api/v1/product/related-product/${pid}/${cid}`
       );
+      console.log("LAmba")
       setRelatedProducts(data?.products);
     } catch (error) {
       console.log(error);

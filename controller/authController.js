@@ -224,8 +224,10 @@ export const getAllOrdersController = async (req, res) => {
       .find({})
       .populate("products", "-photo")
       .populate("buyer", "name")
-      .sort({ createdAt: "-1" });
+      .sort({ createdAt: -1 });
+      console.log("phle")
     res.json(orders);
+    console.log("bad me")
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -235,6 +237,8 @@ export const getAllOrdersController = async (req, res) => {
     });
   }
 };
+
+
 //order status
 export const orderStatusController = async (req, res) => {
   try {
