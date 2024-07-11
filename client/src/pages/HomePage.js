@@ -3,13 +3,12 @@ import React from "react";
 import axios from "axios";
 import Layout from "../components/Layout/Layout";
 import { Checkbox, Radio } from "antd";
-import CheckableTag from "antd/es/tag/CheckableTag";
-import { SiIheartradio } from "react-icons/si";
 import { Prices } from "../components/Prices";
-import { set } from "mongoose";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
+import { AiOutlineReload } from "react-icons/ai";
+import "../styles/Homepage.css";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
@@ -113,9 +112,15 @@ const Homepage = () => {
 
   return (
     <Layout title={"All products - Best Offers"}>
-      <div className="row mt-3">
-        <div className="col-md-2">
-          <h4 className="text-center">Filter By Category</h4>
+      <img
+        src="\banner.png"
+        className="banner-img"
+        alt="bannerimage"
+        width={"100%"}
+      />
+      <div className="container-fluid row mt-3 home-page">
+        <div className="col-md-3 filters">
+          <h4 className="text-center mt-4">Filter By Category</h4>
           <div className="d-flex flex-column">
             {categories?.map((c) => (
               <Checkbox
@@ -157,26 +162,38 @@ const Homepage = () => {
                   alt={p.name}
                 />
                 <div className="card-body">
-                  <h5 className="card-title">{p.name}</h5>
+                  <div className="card-name-price">
+                    <h5 className="card-title">{p.name}</h5>
+                    <h5 className="card-title card-price">
+                      {p.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })}
+                    </h5>
+                  </div>
                   <p className="card-text">{p.description.substring(0, 30)}</p>
-                  <p className="card-text"> $ {p.price}</p>
-                  <button
-                    className="btn btn-primary ms-1"
-                    onClick={() => navigate(`product/${p.slug}`)}
-                  >
-                    {" "}
-                    More details
-                  </button>
-                  <button
-                    className="btn btn-secondary ms-1"
-                    onClick={() => {
-                      setCart([...cart, p ]);
-                      localStorage.setItem('cart',JSON.stringify([...cart,p]))
-                      toast.success('Item added to cart')
-                    }}
-                  >
-                    Add to cart
-                  </button>
+                  <div className="card-name-price">
+                    <button
+                      className="btn btn-info ms-1"
+                      onClick={() => navigate(`product/${p.slug}`)}
+                    >
+                      {" "}
+                      More Details
+                    </button>
+                    <button
+                      className="btn btn-dark  ms-1"
+                      onClick={() => {
+                        setCart([...cart, p]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([...cart, p])
+                        );
+                        toast.success("Item added to cart");
+                      }}
+                    >
+                      ADD TO CART
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -184,13 +201,20 @@ const Homepage = () => {
           <div className="m-2 p-3">
             {products && products.length < total && (
               <button
-                className="btn btn-warning"
+                className="btn loadmore"
                 onClick={(e) => {
                   e.preventDefault();
                   setPage(page + 1);
                 }}
               >
-                {loading ? "Loading..." : "Loadmore"}
+               {loading ? (
+                  "Loading ..."
+                ) : (
+                  <>
+                    {" "}
+                    Loadmore <AiOutlineReload />
+                  </>
+                )}
               </button>
             )}
           </div>
