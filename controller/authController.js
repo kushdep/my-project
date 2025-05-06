@@ -3,7 +3,7 @@ import orderModel from "../models/orderModel.js";
 import { comparePassword, hashPassword } from "../helpers/authhelper.js";
 import JWT from "jsonwebtoken";
 import route from "../routes/authRoute.js";
-  import { compare } from "bcrypt";
+import { compare } from "bcrypt";
 
 export const registercontroller = async (req, res) => {
   try {
@@ -47,7 +47,7 @@ export const registercontroller = async (req, res) => {
       password: hashedPassword,
       answer,
     }).save();
-    res.status(201).send({
+    res.status(201).send({  
       success: true,
       message: "User Register Succesfully",
       user,
@@ -73,6 +73,7 @@ export const loginController = async (req, res) => {
         message: "Invalid Email or Password",
       });
     }
+
     //check user
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -97,7 +98,7 @@ export const loginController = async (req, res) => {
       success: true,
       message: "login Successfully",
       user: {
-        _id:user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         phone: user.phone,
@@ -225,9 +226,9 @@ export const getAllOrdersController = async (req, res) => {
       .populate("products", "-photo")
       .populate("buyer", "name")
       .sort({ createdAt: -1 });
-      console.log("phle")
+    // console.log("phle")
     res.json(orders);
-    console.log("bad me")
+    // console.log("bad me")
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -238,18 +239,33 @@ export const getAllOrdersController = async (req, res) => {
   }
 };
 
-
 //order status
 export const orderStatusController = async (req, res) => {
   try {
     const { orderId } = req.params;
+    // console.log(req.params);
     const { status } = req.body;
+    // console.log(req.body);
     const orders = await orderModel.findByIdAndUpdate(
       orderId,
       { status },
       { new: true }
     );
     res.json(orders);
+    if(status==='deliverd'){
+      const order=await orderModel.findById(orderId)
+      const userId=order.buyer;
+      const userOrders=await orderModel.find({buyer:userId,status:'deliverd'})
+      // console.log(userOrders)
+      let TotalToken=0
+      userOrders.forEach(order => {
+        TotalToken+=order.price;
+      });
+      await userModel.findByIdAndUpdate(
+        userId,
+        {tokens:TotalToken}
+      )
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -259,3 +275,40 @@ export const orderStatusController = async (req, res) => {
     });
   }
 };
+
+export const getAllUsers = async (req, res) => {
+  try {
+    // console.log("din hogi")
+    const users = await userModel.find({}).sort({ createdAt: -1 });
+    // console.log("raat hogi")
+    res.json(users);
+  } catch(error) {
+    console.log(error);
+    res.status(500).send({
+      success:false,
+      message:"Error while getting users",
+      error,
+    })
+  }
+};
+
+export const getAllTokens = async(req,res)=>{
+  try {
+      const { Id } = req.params;
+      console.log(req.params)
+      const user=await userModel.findById(Id)
+      console.log(user)
+      const token=user.tokens;
+      console.log(user.tokens)
+      res.json(token);
+  } catch (error) {
+    res.status(500).send({
+      success:false,
+      message:"Error while getting tokens",
+      error,
+    })
+  }
+}
+
+
+

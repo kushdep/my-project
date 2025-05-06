@@ -18,6 +18,9 @@ const orderSchema = new mongoose.Schema(
       default: "Not Process",
       enum: ["Not Process", "Processing", "Shipped", "deliverd", "cancel"],
     },
+    price:{
+      type: Number,
+    }
   },
   { timestamps: true }
 );

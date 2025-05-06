@@ -24,6 +24,8 @@ import CategoryProduct from "./pages/CategoryProduct.js";
 import Categories from "./pages/Categories.js";
 import AdminOrders from "./pages/Admin/AdminOrders.js";
 import CartPage from "./pages/CartPage.js";
+import GetUsers from "./pages/Admin/GetUsers.js";
+
 
 function App() {
   return (
@@ -48,6 +50,7 @@ function App() {
           <Route path="admin/products" element={<Products />} />  
           <Route path="admin/users" element={<Users />} /> 
           <Route path="admin/orders" element={<AdminOrders />} /> 
+          <Route path="admin/get-users" element={<GetUsers/>} /> 
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

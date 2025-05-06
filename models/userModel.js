@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema(
       type:String,
       required:true
     },
+    tokens:{
+      type:Number,
+      default:0,
+    },
     role: {
       type: Number,
       default: 0,
@@ -36,4 +40,6 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
 export default mongoose.model("users", userSchema);

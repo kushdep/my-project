@@ -281,7 +281,6 @@ export const searchProductController = async (req, res) => {
 
 //similar product
 export const relatedProductController = async (req, res) => {
-  console.log("chota hai")
   try {
     const { pid, cid } = req.params;
     const products = await productModel
@@ -346,6 +345,7 @@ export const braintreeTokenController = async (req, res) => {
 //payment
 export const brainTreePaymentController = async (req, res) => {
   try {
+    console.log(`reached`.bgCyan.white)
     const { nonce, cart } = req.body;
     let total = 0;
     cart.map((i) => {
@@ -365,6 +365,7 @@ export const brainTreePaymentController = async (req, res) => {
             products: cart,
             payment: result,
             buyer: req.user._id,
+            price:total
           }).save();
           res.json({ ok: true });
         } else {
